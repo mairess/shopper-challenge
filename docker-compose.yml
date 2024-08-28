@@ -1,0 +1,36 @@
+services:
+  backend:
+    build: .
+    container_name: backend_shopper
+    tty: true
+    stdin_open: true
+    restart: unless-stopped
+    working_dir: /app
+    volumes:
+      - ./src/:/app/src
+      - ./tests/:/app/tests
+    depends_on:
+      database:
+        condition: service_healthy
+    ports:
+      - 3001:3001
+    environment:
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_HOST: ${DB_HOST}
+      DB_NAME: ${DB_NAME}
+      DB_PORT: ${DB_PORT}
+      GEMINI_API_KEY: ${GEMINI_API_KEY}
+
+  database:
+    image: mysql:8.0.32
+    container_name: mysql
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 10s
+      retries: 5
