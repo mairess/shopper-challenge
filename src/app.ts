@@ -1,5 +1,6 @@
 import express from 'express';
 import cors from 'cors';
+import router from './routes';
 
 class App {
   public app: express.Express;
@@ -10,6 +11,8 @@ class App {
     this.app.use(cors());
 
     this.config();
+
+    this.routes();
 
     this.app.get('/', (req, res) => res.json({ message: 'Application is up! 🚀' }));
   }
@@ -22,8 +25,12 @@ class App {
       next();
     };
 
-    this.app.use(express.json());
+    this.app.use(express.json({ limit: '20mb' }));
     this.app.use(accessControl);
+  }
+
+  private routes(): void {
+    this.app.use(router);
   }
 
   public start(PORT: string | number): void {
