@@ -18,6 +18,21 @@ class MeasureService {
   }
 
   public async uploadMeasure(measureData: IMeasureRequest): Promise<ServiceResponse<IMeasureResponse | ServiceResponseErrorMessage>> {
+    const existingMeasure = await this.measureModel.findByMonthAndType(
+      measureData.measure_type,
+      measureData.measure_datetime,
+    );
+
+    if (existingMeasure) {
+      return {
+        status: 'DOUBLE_REPORT',
+        data: {
+          error_code: 'DOUBLE_REPORT', 
+          error_description: 'Leitura do mês já realizada',
+        },
+      };
+    }
+    
     const { imageUrl, measureValue } = await this.geminiService.uploadAndGenerateContent(measureData.image);
 
     const measureDataToSend: IMeasure = {
