@@ -16,6 +16,16 @@ class MeasureService {
     }
     uploadMeasure(measureData) {
         return __awaiter(this, void 0, void 0, function* () {
+            const existingMeasure = yield this.measureModel.findByMonthAndType(measureData.measure_type, measureData.measure_datetime);
+            if (existingMeasure) {
+                return {
+                    status: 'DOUBLE_REPORT',
+                    data: {
+                        error_code: 'DOUBLE_REPORT',
+                        error_description: 'Leitura do mês já realizada',
+                    },
+                };
+            }
             const { imageUrl, measureValue } = yield this.geminiService.uploadAndGenerateContent(measureData.image);
             const measureDataToSend = {
                 measure_datetime: measureData.measure_datetime,

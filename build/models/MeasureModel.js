@@ -12,7 +12,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+/* eslint-disable max-len */
 /* eslint-disable max-lines-per-function */
+const sequelize_1 = require("sequelize");
 const SequelizeMesure_1 = __importDefault(require("../database/models/SequelizeMesure"));
 class MeasureModel {
     constructor() {
@@ -20,25 +22,28 @@ class MeasureModel {
     }
     uploadMeasure(measureData) {
         return __awaiter(this, void 0, void 0, function* () {
-            const savedMeasure = yield this.model.create({
-                measure_datetime: measureData.measure_datetime,
-                measure_type: measureData.measure_type,
-                measure_value: measureData.measure_value,
-                image_url: measureData.image_url,
-                has_confirmed: measureData.has_confirmed,
-            });
-            console.log({
-                measure_datetime: savedMeasure.measure_datetime,
-                measure_type: savedMeasure.measure_type,
-                measure_value: savedMeasure.measure_value,
-                image_url: savedMeasure.image_url,
-                has_confirmed: savedMeasure.has_confirmed,
-            });
+            const savedMeasure = yield this.model.create(measureData);
             return {
                 image_url: savedMeasure.dataValues.image_url,
                 measure_value: savedMeasure.dataValues.measure_value,
                 measure_uuid: savedMeasure.dataValues.measure_uuid,
             };
+        });
+    }
+    findByMonthAndType(measure_type, measure_datetime) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const date = new Date(measure_datetime);
+            const startOfMonth = new Date(date.getFullYear(), date.getMonth(), 1);
+            const endOfMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+            const measure = yield this.model.findOne({
+                where: {
+                    measure_type,
+                    measure_datetime: {
+                        [sequelize_1.Op.between]: [startOfMonth, endOfMonth],
+                    },
+                },
+            });
+            return measure;
         });
     }
 }

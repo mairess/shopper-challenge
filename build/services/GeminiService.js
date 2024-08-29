@@ -31,56 +31,54 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 /* eslint-disable max-lines-per-function */
 /* eslint-disable max-len */
 const generative_ai_1 = require("@google/generative-ai");
 const server_1 = require("@google/generative-ai/server");
 const fs = __importStar(require("fs"));
+const base64ToBuffer_1 = __importDefault(require("../utils/base64ToBuffer"));
+const extractMimeType_1 = __importDefault(require("../utils/extractMimeType"));
 class GeminiService {
     constructor(apiKey) {
-        this.buffer = Buffer;
-        this.defaultMimeType = 'image/png';
         this.genAI = new generative_ai_1.GoogleGenerativeAI(apiKey);
-        this.model = this.genAI.getGenerativeModel({
-            model: 'gemini-1.5-flash',
-        });
+        this.model = this.genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
         this.fileManager = new server_1.GoogleAIFileManager(apiKey);
-    }
-    extractMimeType(base64String) {
-        const match = base64String.match(/^data:(image\/\w+);base64,/);
-        return match ? match[1] : this.defaultMimeType;
-    }
-    base64ToBuffer(base64String) {
-        const base64Data = base64String.replace(/^data:image\/\w+;base64,/, '');
-        return this.buffer.from(base64Data, 'base64');
     }
     uploadAndGenerateContent(base64Image) {
         return __awaiter(this, void 0, void 0, function* () {
-            const buffer = this.base64ToBuffer(base64Image);
-            const mimeType = this.extractMimeType(base64Image);
-            const base64Data = base64Image.replace(/^data:image\/\w+;base64,/, '');
-            const tempFilePath = '../../temp';
-            fs.writeFileSync(tempFilePath, buffer);
-            const uploadResponse = yield this.fileManager.uploadFile(tempFilePath, {
-                mimeType,
-                displayName: 'Uploaded image',
-            });
-            fs.unlinkSync(tempFilePath);
-            console.log(`Uploaded file ${uploadResponse.file.displayName} as: ${uploadResponse.file.uri}`);
-            const result = yield this.model.generateContent([
-                {
-                    inlineData: {
-                        data: base64Data,
-                        mimeType,
+            try {
+                const buffer = (0, base64ToBuffer_1.default)(base64Image);
+                const mimeType = (0, extractMimeType_1.default)(base64Image);
+                const base64Data = base64Image.replace(/^data:image\/\w+;base64,/, '');
+                const tempFilePath = '../../temp';
+                fs.writeFileSync(tempFilePath, buffer);
+                const uploadResponse = yield this.fileManager.uploadFile(tempFilePath, {
+                    mimeType,
+                    displayName: 'Uploaded image',
+                });
+                fs.unlinkSync(tempFilePath);
+                const result = yield this.model.generateContent([
+                    {
+                        inlineData: {
+                            data: base64Data,
+                            mimeType,
+                        },
                     },
-                },
-                { text: 'Extract and return the exact numeric consumption value from the water/gas meter shown in this image. Nothing but number.' },
-            ]);
-            return {
-                imageUrl: uploadResponse.file.uri,
-                measureValue: result.response.text(),
-            };
+                    { text: 'Extract and return the exact numeric consumption value from the water/gas meter shown in this image. Nothing but number.' },
+                ]);
+                return {
+                    imageUrl: uploadResponse.file.uri,
+                    measureValue: result.response.text(),
+                };
+            }
+            catch (error) {
+                console.error('Erro ao processar imagem na API do Google API:', error);
+                throw new Error('Não foi possível processar a imagem no momento. Tente novamente mais tarde.');
+            }
         });
     }
 }
