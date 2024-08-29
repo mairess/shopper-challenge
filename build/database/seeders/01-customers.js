@@ -15,15 +15,11 @@ exports.default = {
         yield queryInterface.bulkInsert('customers', [
             {
                 customer_code: (0, uuid_1.v4)(),
-                name: 'Avaí/Kindermann',
+                name: 'Rebeca Biles',
             },
             {
                 customer_code: (0, uuid_1.v4)(),
-                name: 'Bahia',
-            },
-            {
-                customer_code: (0, uuid_1.v4)(),
-                name: 'Botafogo',
+                name: 'Simone Andrade',
             }
         ], {});
     }),

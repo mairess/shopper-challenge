@@ -15,11 +15,10 @@ services:
     ports:
       - 3001:3001
     environment:
-      DB_USER: ${DB_USER}
-      DB_PASSWORD: ${DB_PASSWORD}
-      DB_HOST: ${DB_HOST}
-      DB_NAME: ${DB_NAME}
-      DB_PORT: ${DB_PORT}
+      DB_USER: root
+      DB_PASSWORD: password
+      DB_HOST: database
+      DB_PORT: 3306
       GEMINI_API_KEY: ${GEMINI_API_KEY}
 
   database:
