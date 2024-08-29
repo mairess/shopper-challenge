@@ -1,8 +1,8 @@
-import IMeasureRequest from './IMeasureRequest';
+import IMeasure from './IMeasure';
 import IMeasureResponse from './IMeasureResponse';
 
 interface IMeasureModel {
-  uploadMeasure(measureData: IMeasureRequest): Promise<IMeasureResponse>
+  uploadMeasure(measureData: IMeasure): Promise<IMeasureResponse>
 }
 
 export default IMeasureModel;
