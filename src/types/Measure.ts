@@ -6,3 +6,5 @@ export type Measure = {
   image_url: string,
   has_confirmed: boolean
 };
+
+export type MeasureNoId = Omit<Measure, 'measure_uuid'>;
