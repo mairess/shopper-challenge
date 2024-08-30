@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import validateUploadMeasure from './validations/validateUploadMeasure';
 import validateConfirmMeasure from './validations/validateConfirmMeasure';
+import validateQueryParam from './validations/validateQueryParam';
 import mapStatusHTTP from '../utils/mapStatusHTTP';
 
 class Validator {
@@ -10,7 +11,7 @@ class Validator {
       return res
         .status(mapStatusHTTP(error.status))
         .json({
-          error_code: 'INVALID_DATA',
+          error_code: error.status,
           error_description: error.data.message,
         });
     }
@@ -23,7 +24,20 @@ class Validator {
       return res
         .status(mapStatusHTTP(error.status))
         .json({
-          error_code: 'INVALID_DATA',
+          error_code: error.status,
+          error_description: error.data.message,
+        });
+    }
+    next();
+  }
+
+  static validateQueryParam(req: Request, res: Response, next: NextFunction): Response | void {
+    const error = validateQueryParam(req.query);
+    if (error) {
+      return res
+        .status(mapStatusHTTP(error.status))
+        .json({
+          error_code: error.status,
           error_description: error.data.message,
         });
     }

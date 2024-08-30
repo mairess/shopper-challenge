@@ -15,30 +15,15 @@ class CustomerService {
     if (!customer) {
       return {
         status: 'MEASURES_NOT_FOUND',
-        data: {
-          error_code: 'MEASURE_NOT_FOUND', 
-          error_description: 'Nenhuma leitura encontrada',
-        },
+        data: { error_code: 'MEASURE_NOT_FOUND', error_description: 'Nenhuma leitura encontrada' },
       };
     }
 
-    return {
-      status: 'SUCCESSFUL',
-      data: customer,
-    };
+    return { status: 'SUCCESSFUL', data: customer };
   }
 
   public async findAllCustomerMeasuresByMeasureType(customerCode: string, measureType: string): Promise<ServiceResponse<ICustomerResponse | ServiceResponseErrorMessage>> {
     const customer = await this.customerModel.findAllCustomerMeasuresByMeasureType(customerCode, measureType);
-
-    const lowerCaseMeasureType = measureType.toLowerCase();
-
-    if (lowerCaseMeasureType !== 'gas' && lowerCaseMeasureType !== 'water') {
-      return {
-        status: 'INVALID_TYPE',
-        data: { error_code: 'INVALID_TYPE', error_description: 'Tipo de medição não permitida' },
-      };
-    }
 
     if (!customer) {
       return {
@@ -47,10 +32,7 @@ class CustomerService {
       };
     }
 
-    return {
-      status: 'SUCCESSFUL',
-      data: customer,
-    };
+    return { status: 'SUCCESSFUL', data: customer };
   }
 }
 

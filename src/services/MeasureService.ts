@@ -23,10 +23,7 @@ class MeasureService {
     if (existingMeasure) {
       return {
         status: 'DOUBLE_REPORT',
-        data: {
-          error_code: 'DOUBLE_REPORT', 
-          error_description: this.operationAlreadyPerformed,
-        },
+        data: { error_code: 'DOUBLE_REPORT', error_description: this.operationAlreadyPerformed },
       };
     }
     
@@ -41,10 +38,7 @@ class MeasureService {
       customer_code: measureData.customer_code,
     });
 
-    return {
-      status: 'SUCCESSFUL',
-      data: measureDataToSend,
-    };
+    return { status: 'SUCCESSFUL', data: measureDataToSend };
   }
 
   public async confirmMeasure(measureData: IMeasureConfirmRequest): Promise<ServiceResponse<{ success: boolean } | ServiceResponseErrorMessage>> {
@@ -55,19 +49,12 @@ class MeasureService {
     if (!measure || measure.has_confirmed) {
       return {
         status: statusCodeMessage,
-        data: {
-          error_code: statusCodeMessage, 
-          error_description: this.operationAlreadyPerformed,
-        },
-      };
+        data: { error_code: statusCodeMessage, error_description: this.operationAlreadyPerformed } };
     }
 
     await this.measureModel.updateMeasure(measureData);
 
-    return {
-      status: 'SUCCESSFUL',
-      data: { success: true },
-    };
+    return { status: 'SUCCESSFUL', data: { success: true } };
   }
 }
 

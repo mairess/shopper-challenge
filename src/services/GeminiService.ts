@@ -12,6 +12,10 @@ class GeminiService {
   private fileManager: GoogleAIFileManager;
 
   private prompt = 'Extract and return the exact numeric consumption value from the water/gas meter shown in this image. Nothing but number.';
+
+  private erroGemini = 'Não foi possível processar a imagem no momento. Tente novamente mais tarde.';
+
+  private erroConsoleMessage = 'Erro ao processar imagem na API do Google API:';
   
   constructor(apiKey: string) {
     this.genAI = new GoogleGenerativeAI(apiKey);
@@ -36,8 +40,8 @@ class GeminiService {
 
       return { imageUrl: uploadResponse.file.uri, measureValue: result.response.text() };
     } catch (error) {
-      console.error('Erro ao processar imagem na API do Google API:', error);
-      throw new Error('Não foi possível processar a imagem no momento. Tente novamente mais tarde.');
+      console.error(this.erroConsoleMessage, error);
+      throw new Error(this.erroGemini);
     }
   }
 }
