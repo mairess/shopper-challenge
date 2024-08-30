@@ -38,6 +38,8 @@ To run this project locally, follow these steps:
 
 Make sure you have the following installed on your machine:
 
+⚠️ [Node](https://nodejs.org/en)
+
 ⚠️ [Docker](https://www.docker.com/get-started/)
 
 Don't forget to set `GEMINI_API_KEY` on your env variables, this is needed to used google api. [Get tour key here](https://ai.google.dev/gemini-api/docs/api-key).
