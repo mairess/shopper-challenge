@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import {
   DataTypes,
   Model,
@@ -7,8 +8,7 @@ import {
 } from 'sequelize';
 import db from '.';
 
-class SequelizeMeasure extends Model<InferAttributes<SequelizeMeasure>,
-InferCreationAttributes<SequelizeMeasure>> { 
+class SequelizeMeasure extends Model<InferAttributes<SequelizeMeasure>, InferCreationAttributes<SequelizeMeasure>> {
   declare measure_uuid: CreationOptional<string>;
 
   declare measure_datetime: Date;
@@ -17,9 +17,11 @@ InferCreationAttributes<SequelizeMeasure>> {
 
   declare measure_value: number;
 
+  declare has_confirmed: boolean;
+  
   declare image_url: string;
 
-  declare has_confirmed: boolean;
+  declare customer_code?: string;
 }
 
 SequelizeMeasure.init({
@@ -41,13 +43,17 @@ SequelizeMeasure.init({
     type: DataTypes.FLOAT,
     allowNull: false,
   },
-  image_url: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
   has_confirmed: {
     type: DataTypes.BOOLEAN,
     allowNull: false,
+  },
+  image_url: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+  customer_code: {
+    type: DataTypes.STRING,
+    allowNull: true,
   },
 }, {
   sequelize: db,

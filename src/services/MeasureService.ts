@@ -44,6 +44,7 @@ class MeasureService {
       measure_value: Number(measureValue),
       image_url: imageUrl,
       has_confirmed: false,
+      customer_code: measureData.customer_code,
     };
 
     const measure = await this.measureModel.uploadMeasure(measureDataToSend);
@@ -73,9 +74,7 @@ class MeasureService {
       };
     }
 
-    const isConfirmed = await this.measureModel.findByConfirmed(measureData.measure_uuid);
-
-    if (isConfirmed) {
+    if (measure.has_confirmed) {
       return {
         status: 'CONFIRMATION_DUPLICATE',
         data: {
@@ -84,6 +83,8 @@ class MeasureService {
         },
       };
     }
+
+    await this.measureModel.updateMeasure(measureData);
 
     return {
       status: 'SUCCESSFUL',

@@ -13,6 +13,7 @@ const schemaConfirmRequest = Joi.object({
       'number.positive': 'confirmed_value deve ser um número positivo',
       'any.empty': 'confirmed_value não poder ser vazio',
       'any.required': 'confirmed_value é obrigatório',
+      'number.base': 'confirmed_value deve ser um número',
     }),
 
 });

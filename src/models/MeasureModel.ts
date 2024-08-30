@@ -5,6 +5,8 @@ import SequelizeMeasure from '../database/models/SequelizeMesure';
 import IMeasure from '../interfaces/IMeasure';
 import IMeasureModel from '../interfaces/IMeasureModel';
 import IMeasureResponse from '../interfaces/IMeasureResponse';
+import IMeasureConfirmRequest from '../interfaces/IMeasureConfirmRequest';
+import IMeasureIdentifiable from '../interfaces/IMeasureIdentifiable';
 
 class MeasureModel implements IMeasureModel {
   private model = SequelizeMeasure;
@@ -49,6 +51,26 @@ class MeasureModel implements IMeasureModel {
     });
 
     return measure;
+  }
+
+  public async updateMeasure(measureData: IMeasureConfirmRequest): Promise<IMeasureIdentifiable | null> {
+    const [affectedCount] = await this.model.update(
+      { 
+        measure_value: measureData.confirmed_value,
+        has_confirmed: true,
+      },
+      {
+        where: { measure_uuid: measureData.measure_uuid },
+      },
+    );
+
+    if (affectedCount === 0) {
+      return null;
+    }
+
+    const updatedMeasure = await this.model.findOne({ where: { measure_uuid: measureData.measure_uuid } });
+
+    return updatedMeasure;
   }
 }
 
