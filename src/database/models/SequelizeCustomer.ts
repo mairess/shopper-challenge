@@ -31,8 +31,6 @@ SequelizeCustomer.init({
   timestamps: false,
 });
 
-SequelizeMeasure.belongsTo(SequelizeCustomer, { foreignKey: 'measure_uuid', as: 'measure' });
-
-SequelizeCustomer.hasMany(SequelizeMeasure, { foreignKey: 'measure_uuid', as: 'measure' });
+SequelizeCustomer.hasMany(SequelizeMeasure, { foreignKey: 'customer_code', as: 'measures' });
 
 export default SequelizeCustomer;

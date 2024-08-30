@@ -21,7 +21,7 @@ const schemaUploadRequest = Joi.object({
     .messages({
       'any.required': 'measure_type é obrigatório',
       'string.empty': 'measure_type não poder ser vazio',
-      'any.only': 'measure_type deve ser WATER ou GAS',
+      'any.only': 'Tipo de medição não permitida',
     }),
 
 });

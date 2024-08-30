@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import { ServiceResponseErrorMessage, ServiceResponse } from '../types/ServiceResponse';
 import IMeasureConfirmRequest from './IMeasureConfirmRequest';
 import IMeasureRequest from './IMeasureRequest';

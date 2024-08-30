@@ -1,4 +1,7 @@
-interface IMeasure {
+import { Identifiable } from '.';
+
+interface IMeasureIdentifiable extends Identifiable {
+  measure_uuid: string
   measure_datetime: Date,
   measure_type: 'WATER' | 'GAS',
   measure_value: number,
@@ -7,4 +10,4 @@ interface IMeasure {
   customer_code?: string;
 }
 
-export default IMeasure;
+export default IMeasureIdentifiable;

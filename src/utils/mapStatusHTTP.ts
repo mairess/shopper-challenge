@@ -1,17 +1,16 @@
-/* eslint-disable complexity */
+const statusHttpMap: { [key: string]: number } = {
+  SUCCESSFUL: 200,
+  INVALID_DATA: 400,
+  DOUBLE_REPORT: 409,
+  MEASURE_NOT_FOUND: 404,
+  CONFIRMATION_DUPLICATE: 409,
+  INVALID_TYPE: 400,
+  MEASURES_NOT_FOUND: 404,
+  INTERNAL_SERVER_ERROR: 500,
+};
+
 function mapStatusHTTP(status: string): number {
-  switch (status) {
-    case 'SUCCESSFUL': return 200;
-    case 'CREATED': return 201;
-    case 'INVALID_DATA': return 400;
-    case 'DOUBLE_REPORT': return 409;
-    case 'MEASURE_NOT_FOUND': return 404;
-    case 'CONFIRMATION_DUPLICATE': return 409;
-    case 'INVALID_TYPE': return 422;
-    case 'MEASURES_NOT_FOUND': return 404;
-    case 'INTERNAL_SERVER_ERROR': return 500;
-    default: return 500;
-  }
+  return statusHttpMap[status] || 500;
 }
 
 export default mapStatusHTTP;

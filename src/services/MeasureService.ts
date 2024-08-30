@@ -1,6 +1,3 @@
-/* eslint-disable max-lines-per-function */
-/* eslint-disable max-len */
-import IMeasure from '../interfaces/IMeasure';
 import IMeasureConfirmRequest from '../interfaces/IMeasureConfirmRequest';
 import IMeasureModel from '../interfaces/IMeasureModel';
 import IMeasureRequest from '../interfaces/IMeasureRequest';
@@ -21,74 +18,43 @@ class MeasureService {
   }
 
   public async uploadMeasure(measureData: IMeasureRequest): Promise<ServiceResponse<IMeasureResponse | ServiceResponseErrorMessage>> {
-    const existingMeasure = await this.measureModel.findByMonthAndType(
-      measureData.measure_type,
-      measureData.measure_datetime,
-    );
+    const existingMeasure = await this.measureModel.findByMonthAndType(measureData.measure_type, measureData.measure_datetime);
 
     if (existingMeasure) {
       return {
         status: 'DOUBLE_REPORT',
-        data: {
-          error_code: 'DOUBLE_REPORT', 
-          error_description: this.operationAlreadyPerformed,
-        },
+        data: { error_code: 'DOUBLE_REPORT', error_description: this.operationAlreadyPerformed },
       };
     }
     
     const { imageUrl, measureValue } = await this.geminiService.uploadAndGenerateContent(measureData.image);
 
-    const measureDataToSend: IMeasure = {
+    const measureDataToSend = await this.measureModel.uploadMeasure({
       measure_datetime: measureData.measure_datetime,
       measure_type: measureData.measure_type,
       measure_value: Number(measureValue),
       image_url: imageUrl,
       has_confirmed: false,
-    };
+      customer_code: measureData.customer_code,
+    });
 
-    const measure = await this.measureModel.uploadMeasure(measureDataToSend);
-
-    const measureResponse: IMeasureResponse = {
-      image_url: measure.image_url,
-      measure_value: Number(measure.measure_value),
-      measure_uuid: measure.measure_uuid,
-    };
-
-    return {
-      status: 'SUCCESSFUL',
-      data: measureResponse,
-    };
+    return { status: 'SUCCESSFUL', data: measureDataToSend };
   }
 
   public async confirmMeasure(measureData: IMeasureConfirmRequest): Promise<ServiceResponse<{ success: boolean } | ServiceResponseErrorMessage>> {
     const measure = await this.measureModel.findByUuid(measureData.measure_uuid);
 
-    if (!measure) {
+    const statusCodeMessage = !measure ? 'MEASURE_NOT_FOUND' : 'CONFIRMATION_DUPLICATE';
+
+    if (!measure || measure.has_confirmed) {
       return {
-        status: 'MEASURE_NOT_FOUND',
-        data: {
-          error_code: 'MEASURE_NOT_FOUND', 
-          error_description: this.operationAlreadyPerformed,
-        },
-      };
+        status: statusCodeMessage,
+        data: { error_code: statusCodeMessage, error_description: this.operationAlreadyPerformed } };
     }
 
-    const isConfirmed = await this.measureModel.findByConfirmed(measureData.measure_uuid);
+    await this.measureModel.updateMeasure(measureData);
 
-    if (isConfirmed) {
-      return {
-        status: 'CONFIRMATION_DUPLICATE',
-        data: {
-          error_code: 'CONFIRMATION_DUPLICATE', 
-          error_description: this.operationAlreadyPerformed,
-        },
-      };
-    }
-
-    return {
-      status: 'SUCCESSFUL',
-      data: { success: true },
-    };
+    return { status: 'SUCCESSFUL', data: { success: true } };
   }
 }
 

@@ -28,7 +28,11 @@ export default {
       has_confirmed: {
         allowNull: false,
         type: DataTypes.BOOLEAN,
-      }
+      },
+      customer_code: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
     }) 
   }, 
   
