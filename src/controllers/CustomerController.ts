@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/naming-convention */
-/* eslint-disable max-len */
 import { Request, Response } from 'express';
 import mapStatusHTTP from '../utils/mapStatusHTTP';
 import ICustomerService from '../interfaces/ICustomerService';
@@ -13,12 +11,12 @@ class CustomerController {
 
   async findAllCustomerMeasures(req: Request, res: Response) {
     const { customerCode } = req.params;
-    const { measure_type } = req.query;
+    const { measure_type: measureType } = req.query;
 
     let serviceResponse;
 
-    if (typeof measure_type === 'string') {
-      serviceResponse = await this.customerService.findAllCustomerMeasuresByMeasureType(customerCode, measure_type);
+    if (typeof measureType === 'string') {
+      serviceResponse = await this.customerService.findAllCustomerMeasuresByMeasureType(customerCode, measureType);
     } else {
       serviceResponse = await this.customerService.findAllCustomerMeasures(customerCode);
     }

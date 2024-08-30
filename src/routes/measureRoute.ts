@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import { Request, Response, Router } from 'express';
 import Validator from '../middlewares/Validator';
 import MeasureController from '../controllers/MeasureController';

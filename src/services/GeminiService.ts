@@ -1,5 +1,3 @@
-/* eslint-disable max-lines-per-function */
-/* eslint-disable max-len */
 import { GoogleGenerativeAI, GenerativeModel } from '@google/generative-ai';
 import { GoogleAIFileManager } from '@google/generative-ai/server';
 import * as fs from 'fs';
@@ -12,6 +10,8 @@ class GeminiService {
   private model: GenerativeModel;
 
   private fileManager: GoogleAIFileManager;
+
+  private prompt = 'Extract and return the exact numeric consumption value from the water/gas meter shown in this image. Nothing but number.';
   
   constructor(apiKey: string) {
     this.genAI = new GoogleGenerativeAI(apiKey);
@@ -28,27 +28,13 @@ class GeminiService {
       const tempFilePath = '../../temp';
       fs.writeFileSync(tempFilePath, buffer);
 
-      const uploadResponse = await this.fileManager.uploadFile(tempFilePath, {
-        mimeType,
-        displayName: 'Uploaded image',
-      });
+      const uploadResponse = await this.fileManager.uploadFile(tempFilePath, { mimeType, displayName: 'Uploaded image' });
 
       fs.unlinkSync(tempFilePath);
 
-      const result = await this.model.generateContent([
-        {
-          inlineData: {
-            data: base64Data,
-            mimeType,
-          },
-        },
-        { text: 'Extract and return the exact numeric consumption value from the water/gas meter shown in this image. Nothing but number.' },
-      ]);
+      const result = await this.model.generateContent([{ inlineData: { data: base64Data, mimeType } }, { text: this.prompt }]);
 
-      return {
-        imageUrl: uploadResponse.file.uri,
-        measureValue: result.response.text(),
-      };
+      return { imageUrl: uploadResponse.file.uri, measureValue: result.response.text() };
     } catch (error) {
       console.error('Erro ao processar imagem na API do Google API:', error);
       throw new Error('Não foi possível processar a imagem no momento. Tente novamente mais tarde.');

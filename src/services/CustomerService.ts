@@ -1,5 +1,3 @@
-/* eslint-disable max-lines-per-function */
-/* eslint-disable max-len */
 import ICustomerModel from '../interfaces/ICustomerModel';
 import ICustomerResponse from '../interfaces/ICustomerResponse';
 import { ServiceResponse, ServiceResponseErrorMessage } from '../types/ServiceResponse';
@@ -38,20 +36,14 @@ class CustomerService {
     if (lowerCaseMeasureType !== 'gas' && lowerCaseMeasureType !== 'water') {
       return {
         status: 'INVALID_TYPE',
-        data: {
-          error_code: 'INVALID_TYPE', 
-          error_description: 'Tipo de medição não permitida',
-        },
+        data: { error_code: 'INVALID_TYPE', error_description: 'Tipo de medição não permitida' },
       };
     }
 
     if (!customer) {
       return {
         status: 'MEASURES_NOT_FOUND',
-        data: {
-          error_code: 'MEASURES_NOT_FOUND', 
-          error_description: 'Nenhuma leitura encontrada',
-        },
+        data: { error_code: 'MEASURES_NOT_FOUND', error_description: 'Nenhuma leitura encontrada' },
       };
     }
 

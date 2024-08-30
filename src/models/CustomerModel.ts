@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import SequelizeCustomer from '../database/models/SequelizeCustomer';
 import SequelizeMeasure from '../database/models/SequelizeMesure';
 import ICustomerModel from '../interfaces/ICustomerModel';

@@ -1,5 +1,3 @@
-/* eslint-disable max-len */
-/* eslint-disable max-lines-per-function */
 import { Op } from 'sequelize';
 import SequelizeMeasure from '../database/models/SequelizeMesure';
 import IMeasure from '../interfaces/IMeasure';

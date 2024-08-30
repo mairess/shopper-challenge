@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import { Request, Response, Router } from 'express';
 import CustomerController from '../controllers/CustomerController';
 import CustomerModel from '../models/CustomerModel';
