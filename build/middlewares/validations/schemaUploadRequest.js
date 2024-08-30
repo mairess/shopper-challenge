@@ -11,7 +11,8 @@ const schemaUploadRequest = joi_1.default.object({
     measure_type: joi_1.default.string().valid('WATER', 'GAS').required(),
 })
     .messages({
-    'any.required': 'All fields must be filled.',
-    'string.empty': 'All fields must be filled.',
+    'any.required': 'Todos os campos são obrigatórios',
+    'string.empty': 'Todos os campos são obrigatórios',
+    'string.base64': 'Imagem base64 inválida',
 });
 exports.default = schemaUploadRequest;

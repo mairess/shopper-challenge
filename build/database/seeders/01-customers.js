@@ -9,16 +9,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const uuid_1 = require("uuid");
 exports.default = {
     up: (queryInterface) => __awaiter(void 0, void 0, void 0, function* () {
         yield queryInterface.bulkInsert('customers', [
             {
-                customer_code: (0, uuid_1.v4)(),
+                customer_code: "PGO-004",
                 name: 'Rebeca Biles',
             },
             {
-                customer_code: (0, uuid_1.v4)(),
+                customer_code: 'XTU-025',
                 name: 'Simone Andrade',
             }
         ], {});

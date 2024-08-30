@@ -10,8 +10,7 @@ class SequelizeCustomer extends sequelize_1.Model {
 }
 SequelizeCustomer.init({
     customer_code: {
-        type: sequelize_1.DataTypes.UUID,
-        defaultValue: sequelize_1.DataTypes.UUIDV4,
+        type: sequelize_1.DataTypes.STRING,
         allowNull: false,
         primaryKey: true,
     },

@@ -3,6 +3,6 @@ import measureRouter from './measureRoute';
 
 const router = Router();
 
-router.use('/measures', measureRouter);
+router.use('/upload', measureRouter);
 
 export default router;
