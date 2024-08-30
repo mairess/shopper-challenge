@@ -2,7 +2,6 @@ import { expect } from 'chai';
 import sinon from 'sinon';
 import SequelizeMesure from '../../database/models/SequelizeMesure';
 import MeasureModel from '../../models/MeasureModel';
-import IMeasureRequest from '../../interfaces/IMeasureRequest';
 import GeminiService from '../../services/GeminiService';
 import MeasureService from '../../services/MeasureService';
 import IMeasureConfirmRequest from '../../interfaces/IMeasureConfirmRequest';
@@ -14,11 +13,6 @@ const geminiService = new GeminiService(GEMINI_API_KEY);
 const measureModel = new MeasureModel();
 const measureService = new MeasureService(measureModel, geminiService);
 
-const mockReturnCreate = {
-  image_url:  "https://generativelanguage.googleapis.com/v1beta/files/6twiqwv7ul58",
-  measure_value: 110,
-  measure_uuid: '95664746-b2-bdf95f1dce0b',
-} 
 
 describe('MeasureService', function() {
 
