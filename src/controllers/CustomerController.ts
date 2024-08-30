@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable max-len */
 import { Request, Response } from 'express';
 import mapStatusHTTP from '../utils/mapStatusHTTP';
 import ICustomerService from '../interfaces/ICustomerService';
@@ -9,9 +11,20 @@ class CustomerController {
     this.customerService = customerService;
   }
 
-  async findAllMeasuresByCustomer(req: Request, res: Response) {
+  async findAllCustomerMeasures(req: Request, res: Response) {
     const { customerCode } = req.params;
-    const serviceResponse = await this.customerService.findAllMeasuresByCustomer(customerCode);
+    const { measure_type } = req.query;
+    console.log(`customerCode: ${customerCode}`);
+    console.log(`measureType: ${measure_type}`);
+
+    let serviceResponse;
+
+    if (typeof measure_type === 'string') {
+      serviceResponse = await this.customerService.findAllCustomerMeasuresByMeasureType(customerCode, measure_type);
+    } else {
+      serviceResponse = await this.customerService.findAllCustomerMeasures(customerCode);
+    }
+
     return res.status(mapStatusHTTP(serviceResponse.status)).json(serviceResponse.data);
   }
 }

@@ -10,6 +10,6 @@ const customerController = new CustomerController(customerService);
 
 const router = Router();
 
-router.get('/:customerCode/list', (req: Request, res: Response) => customerController.findAllMeasuresByCustomer(req, res));
+router.get('/:customerCode/list', (req: Request, res: Response) => customerController.findAllCustomerMeasures(req, res));
 
 export default router;

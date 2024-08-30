@@ -3,7 +3,8 @@ import { ServiceResponseErrorMessage, ServiceResponse } from '../types/ServiceRe
 import ICustomerResponse from './ICustomerResponse';
 
 interface ICustomerService {
-  findAllMeasuresByCustomer(customerCode: string): Promise<ServiceResponse<ICustomerResponse | ServiceResponseErrorMessage>>
+  findAllCustomerMeasures(customerCode: string): Promise<ServiceResponse<ICustomerResponse | ServiceResponseErrorMessage>>
+  findAllCustomerMeasuresByMeasureType(customerCode: string, measureType: string): Promise<ServiceResponse<ICustomerResponse | ServiceResponseErrorMessage>>
 }
 
 export default ICustomerService;

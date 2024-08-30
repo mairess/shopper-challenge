@@ -2,7 +2,8 @@
 import ICustomerResponse from './ICustomerResponse';
 
 interface ICustomerModel {
-  findAllMeasuresByCustomer(customerCode: string): Promise<ICustomerResponse | null>
+  findAllCustomerMeasures(customerCode: string): Promise<ICustomerResponse | null>
+  findAllCustomerMeasuresByMeasureType(customerCode: string, measureType: string): Promise<ICustomerResponse | null>
 }
 
 export default ICustomerModel;
