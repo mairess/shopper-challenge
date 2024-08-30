@@ -1,6 +1,8 @@
 import express from 'express';
 import cors from 'cors';
 import router from './routes';
+import 'express-async-errors';
+import errorMiddleware from './middlewares/errorMiddleware';
 
 class App {
   public app: express.Express;
@@ -15,6 +17,8 @@ class App {
     this.routes();
 
     this.app.get('/', (req, res) => res.json({ message: 'Application is up! 🚀' }));
+
+    this.app.use(errorMiddleware);
   }
 
   private config():void {
