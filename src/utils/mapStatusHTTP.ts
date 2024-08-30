@@ -7,7 +7,7 @@ function mapStatusHTTP(status: string): number {
     case 'DOUBLE_REPORT': return 409;
     case 'MEASURE_NOT_FOUND': return 404;
     case 'CONFIRMATION_DUPLICATE': return 409;
-    case 'INVALID_TYPE': return 422;
+    case 'INVALID_TYPE': return 400;
     case 'MEASURES_NOT_FOUND': return 404;
     case 'INTERNAL_SERVER_ERROR': return 500;
     default: return 500;

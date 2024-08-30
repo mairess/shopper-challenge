@@ -14,8 +14,6 @@ class CustomerController {
   async findAllCustomerMeasures(req: Request, res: Response) {
     const { customerCode } = req.params;
     const { measure_type } = req.query;
-    console.log(`customerCode: ${customerCode}`);
-    console.log(`measureType: ${measure_type}`);
 
     let serviceResponse;
 
