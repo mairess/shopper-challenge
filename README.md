@@ -54,17 +54,19 @@ git clone git@github.com:mairess/shopper-challenge.git
 cd shopper-challenge
 ```
 
-2. Start database:
+2. Install dependencies:
+
+```BASH
+npm install
+```
+
+3. Start database:
 
 ```BASH
 docker compose up -d database
 ```
 
-3. Install dependencies:
 
-```BASH
-npm install
-```
 
 4. Start backend:
 
