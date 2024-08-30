@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import { Request, Response, Router } from 'express';
 import Validator from '../middlewares/Validator';
 import MeasureController from '../controllers/MeasureController';
@@ -14,10 +15,7 @@ const measureController = new MeasureController(measureService);
 
 const router = Router();
 
-router.post(
-  '/', 
-  Validator.validateUploadMeasure,
-  (req: Request, res: Response) => measureController.uploadMeasure(req, res),
-);
+router.post('/', Validator.validateUploadMeasure, (req: Request, res: Response) => measureController.uploadMeasure(req, res));
+router.patch('/', Validator.validateConfirmMeasure, (req: Request, res: Response) => measureController.confirmMeasure(req, res));
 
 export default router;

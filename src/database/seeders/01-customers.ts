@@ -1,5 +1,4 @@
 import { QueryInterface } from 'sequelize';
-import { v4 as uuidv4 } from 'uuid';
 
 export default {
   up: async (queryInterface: QueryInterface) => {
@@ -7,11 +6,11 @@ export default {
       'customers',
       [
         {
-            customer_code: uuidv4(),
+            customer_code: "PGO-004",
             name: 'Rebeca Biles',
           },
           {
-            customer_code: uuidv4(),
+            customer_code: 'XTU-025',
             name: 'Simone Andrade',
           }
       ],

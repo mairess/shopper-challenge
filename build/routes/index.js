@@ -6,5 +6,5 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const measureRoute_1 = __importDefault(require("./measureRoute"));
 const router = (0, express_1.Router)();
-router.use('/measures', measureRoute_1.default);
+router.use('/upload', measureRoute_1.default);
 exports.default = router;

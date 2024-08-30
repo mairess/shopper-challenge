@@ -35,6 +35,21 @@ class MeasureModel implements IMeasureModel {
     });
     return measure;
   }
+
+  public async findByUuid(uuid: string): Promise<IMeasure | null> {
+    return this.model.findByPk(uuid);
+  }
+
+  public async findByConfirmed(uuid: string): Promise<IMeasure | null> {
+    const measure = await this.model.findOne({
+      where: {
+        measure_uuid: uuid,
+        has_confirmed: true,
+      },
+    });
+
+    return measure;
+  }
 }
 
 export default MeasureModel;

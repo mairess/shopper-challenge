@@ -14,6 +14,12 @@ class MeasureController {
     const serviceResponse = await this.measureService.uploadMeasure(measureData);
     return res.status(mapStatusHTTP(serviceResponse.status)).json(serviceResponse.data);
   }
+
+  async confirmMeasure(req: Request, res: Response) {
+    const measureData = req.body;
+    const serviceResponse = await this.measureService.confirmMeasure(measureData);
+    return res.status(mapStatusHTTP(serviceResponse.status)).json(serviceResponse.data);
+  }
 }
 
 export default MeasureController;

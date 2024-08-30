@@ -6,11 +6,11 @@ const validateUploadMeasure = (keysObjectToValidate: IMeasureRequest) => {
   const pattern = /^data:image\/(png|jpg|jpeg|webp|heic|heif|gif);base64,/;
 
   if (!pattern.test(keysObjectToValidate.image)) {
-    return { status: 'INVALID_DATA', data: { message: 'Invalid base64 image source' } };
+    return { status: 'INVALID_DATA', data: { message: 'Base64 inválida' } };
   }
 
   const { error } = schemaUploadRequest.validate({ ...keysObjectToValidate, image: base64Data });
-
+  
   if (error) return { status: 'INVALID_DATA', data: { message: error.message } };
 };
 
