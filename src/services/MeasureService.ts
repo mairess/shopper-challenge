@@ -1,6 +1,7 @@
 /* eslint-disable max-lines-per-function */
 /* eslint-disable max-len */
 import IMeasure from '../interfaces/IMeasure';
+import IMeasureConfirmRequest from '../interfaces/IMeasureConfirmRequest';
 import IMeasureModel from '../interfaces/IMeasureModel';
 import IMeasureRequest from '../interfaces/IMeasureRequest';
 import IMeasureResponse from '../interfaces/IMeasureResponse';
@@ -11,6 +12,8 @@ class MeasureService {
   private measureModel: IMeasureModel;
 
   private geminiService: GeminiService;
+
+  private operationAlreadyPerformed = 'Leitura do mês já realizada';
 
   constructor(measureModel: IMeasureModel, geminiService: GeminiService) {
     this.measureModel = measureModel;
@@ -28,7 +31,7 @@ class MeasureService {
         status: 'DOUBLE_REPORT',
         data: {
           error_code: 'DOUBLE_REPORT', 
-          error_description: 'Leitura do mês já realizada',
+          error_description: this.operationAlreadyPerformed,
         },
       };
     }
@@ -54,6 +57,37 @@ class MeasureService {
     return {
       status: 'SUCCESSFUL',
       data: measureResponse,
+    };
+  }
+
+  public async confirmMeasure(measureData: IMeasureConfirmRequest): Promise<ServiceResponse<{ success: boolean } | ServiceResponseErrorMessage>> {
+    const measure = await this.measureModel.findByUuid(measureData.measure_uuid);
+
+    if (!measure) {
+      return {
+        status: 'MEASURE_NOT_FOUND',
+        data: {
+          error_code: 'MEASURE_NOT_FOUND', 
+          error_description: this.operationAlreadyPerformed,
+        },
+      };
+    }
+
+    const isConfirmed = await this.measureModel.findByConfirmed(measureData.measure_uuid);
+
+    if (isConfirmed) {
+      return {
+        status: 'CONFIRMATION_DUPLICATE',
+        data: {
+          error_code: 'CONFIRMATION_DUPLICATE', 
+          error_description: this.operationAlreadyPerformed,
+        },
+      };
+    }
+
+    return {
+      status: 'SUCCESSFUL',
+      data: { success: true },
     };
   }
 }
